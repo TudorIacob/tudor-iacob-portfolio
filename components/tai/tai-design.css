@@ -1,0 +1,779 @@
+.tai-section {
+  position: relative;
+  isolation: isolate;
+  background: var(--background);
+  padding-block: 64px 80px;
+}
+.tai-ambient {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at 95% 20%,
+    color-mix(in srgb, var(--accent) 9%, transparent),
+    transparent 42%
+  );
+}
+.tai-stage {
+  max-width: 1040px;
+}
+.tai-heading {
+  text-align: center;
+  margin-bottom: 28px;
+}
+.tai-kicker {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  color: var(--accent);
+  font-size: 11px;
+  letter-spacing: 0.24em;
+}
+.tai-kicker::before,
+.tai-kicker::after {
+  content: "";
+  width: 28px;
+  height: 1px;
+  background: var(--accent);
+  opacity: 0.5;
+}
+.tai-heading h2 {
+  display: flex;
+  justify-content: center;
+  line-height: 1;
+  margin: 10px 0 16px;
+}
+.tai-monogram {
+  position: relative;
+  display: block;
+  width: clamp(156px, 18vw, 200px);
+  aspect-ratio: 520 / 370;
+  overflow: hidden;
+  mix-blend-mode: lighten;
+}
+.tai-monogram img {
+  position: absolute;
+  width: 241.154%;
+  max-width: none;
+  height: auto;
+  left: -69.231%;
+  top: -121.622%;
+}
+.tai-heading > p:last-child {
+  font-size: clamp(17px, 2vw, 22px);
+  line-height: 1.45;
+}
+.tai-heading a {
+  color: var(--accent);
+}
+.tai-heading a:hover {
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+.tai-section .chat-shell {
+  border-color: color-mix(in srgb, var(--accent) 25%, var(--border));
+  border-radius: 22px;
+  background: color-mix(in srgb, var(--card) 94%, transparent);
+}
+.tai-section .chat-toolbar {
+  padding: 16px 20px;
+  background: color-mix(in srgb, var(--accent) 3%, transparent);
+}
+.tai-bot-icon {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  color: var(--background);
+  background: var(--accent);
+  border-radius: 12px;
+}
+.tai-chat-identity {
+  display: flex;
+  flex-direction: column;
+}
+.tai-chat-identity strong {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.3;
+}
+.tai-chat-identity > span {
+  color: var(--muted);
+  font-size: 13px;
+}
+.tai-section .mode-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 14px;
+  border-radius: 99px;
+  font-size: 11px;
+}
+.tai-section .mode-badge::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  flex-shrink: 0;
+  background: var(--accent);
+  border-radius: 50%;
+}
+.tai-section .chat-body {
+  height: 380px;
+  padding: 24px 20px;
+}
+.tai-section .chat-body-welcome {
+  height: auto;
+  overflow: visible;
+}
+.tai-section .chat-empty {
+  padding: 0;
+}
+.tai-welcome {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+.tai-welcome-mark {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 10px;
+  background: var(--hover);
+  color: var(--accent);
+  font: italic 32px var(--font-display);
+}
+.tai-welcome > div {
+  flex: 1;
+  min-width: 0;
+  padding: 15px 20px;
+  background: #ffffff07;
+  border-radius: 12px;
+}
+.tai-section .tai-welcome h3 {
+  font: 400 17px/1.4 var(--font-body);
+  letter-spacing: -0.01em;
+}
+.tai-welcome p {
+  font-size: 14px;
+  line-height: 1.6;
+  margin-top: 6px;
+}
+.tai-suggestions-label {
+  margin: 22px 0 10px;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+}
+.tai-section .suggestions {
+  gap: 10px 14px;
+}
+.tai-section .suggestions button {
+  min-height: 58px;
+  padding: 12px 18px;
+  border-radius: 12px;
+  font-size: 14px;
+  background: color-mix(in srgb, var(--accent) 3%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 18%, var(--border));
+  gap: 16px;
+}
+.tai-section .suggestions button span {
+  flex: 1;
+}
+.tai-section .suggestions button svg {
+  color: var(--accent);
+}
+.tai-section .suggestions button:hover {
+  background: var(--hover);
+  border-color: var(--accent);
+}
+.tai-section .chat-bottom {
+  border: 0;
+  padding: 0 20px 16px;
+}
+.tai-section .chat-input {
+  padding: 6px 8px 6px 16px;
+  border-radius: 12px;
+  background: transparent;
+  min-height: 58px;
+}
+.chat-input-icon {
+  color: var(--muted);
+}
+.tai-section .send-button {
+  border-radius: 9px;
+}
+.tai-section .chat-bottom > p {
+  max-width: 660px;
+  margin: 10px auto 0;
+}
+.tai-section .chat-contact {
+  margin-top: 4px;
+  min-height: 28px;
+}
+.tai-section .message-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  background: var(--hover);
+}
+.tai-section .message.assistant > div {
+  background: #ffffff07;
+  padding: 12px 16px;
+  border-radius: 12px;
+}
+.tai-section .message.user {
+  justify-content: flex-end;
+}
+.tai-section .message.user > div {
+  background: var(--hover);
+  padding: 12px 16px;
+  border-radius: 12px;
+}
+.tai-section .message.user p {
+  color: var(--foreground);
+}
+.tai-about {
+  margin-top: 36px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+}
+.tai-detail-label {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  color: var(--accent);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  margin-bottom: 18px;
+}
+.tai-about-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 50px;
+  padding-bottom: 24px;
+}
+.tai-about-grid h3 {
+  font: 400 clamp(28px, 3.2vw, 43px)/1.12 var(--font-display);
+  letter-spacing: -0.035em;
+}
+.tai-about-grid em {
+  color: var(--accent);
+}
+.tai-about-grid p {
+  font-size: 15px;
+  line-height: 1.6;
+}
+.tai-how {
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+}
+.tai-steps {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  margin: 0 0 24px;
+  padding: 0;
+}
+.tai-steps li {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--accent) 3%, transparent);
+}
+.tai-step-number {
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+}
+.tai-steps svg {
+  color: var(--accent);
+}
+.tai-steps h4 {
+  font-size: 15px;
+  font-weight: 500;
+  margin: 0 0 6px;
+}
+.tai-steps p {
+  font-size: 12px;
+  line-height: 1.5;
+}
+.tai-stack {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 16px;
+  padding: 0;
+  margin: 0;
+}
+.tai-stack li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 48px;
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  background: color-mix(in srgb, var(--accent) 3%, transparent);
+  font-size: 12px;
+}
+.tai-stack svg {
+  color: var(--accent);
+}
+@media (max-width: 1000px) {
+  .tai-steps li {
+    gap: 12px;
+    padding: 16px;
+  }
+  .tai-steps svg {
+    width: 24px;
+  }
+  .tai-step-number {
+    display: none;
+  }
+  .tai-stack {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 700px) {
+  .tai-section {
+    padding-block: 44px 56px;
+  }
+  .tai-kicker {
+    font-size: 9px;
+    letter-spacing: 0.18em;
+  }
+  .tai-about-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .tai-steps {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .tai-step-number {
+    display: block;
+  }
+  .tai-steps p {
+    font-size: 13px;
+  }
+  .tai-section .chat-toolbar {
+    padding: 12px;
+  }
+  .tai-bot-icon {
+    width: 38px;
+    height: 40px;
+  }
+  .tai-chat-identity strong {
+    font-size: 17px;
+  }
+  .tai-chat-identity > span {
+    font-size: 11px;
+  }
+  .tai-section .mode-badge {
+    padding: 6px 8px;
+    font-size: 9px;
+    gap: 5px;
+  }
+  .tai-section .chat-body {
+    padding: 18px 14px;
+  }
+  .tai-section .chat-bottom {
+    padding: 0 14px 12px;
+  }
+  .tai-welcome {
+    gap: 10px;
+  }
+  .tai-welcome-mark {
+    width: 30px;
+    height: 36px;
+    font-size: 25px;
+  }
+  .tai-welcome > div {
+    padding: 12px;
+  }
+  .tai-section .tai-welcome h3 {
+    font-size: 15px;
+  }
+  .tai-welcome p {
+    font-size: 13px;
+  }
+  .tai-section .suggestions {
+    grid-template-columns: 1fr;
+  }
+  .tai-section .suggestions button {
+    font-size: 13px;
+    min-height: 52px;
+    padding: 10px 12px;
+    gap: 12px;
+  }
+  .tai-section .message {
+    gap: 8px;
+  }
+  .tai-section .message-avatar {
+    width: 28px;
+    height: 30px;
+  }
+  .tai-stack {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .tai-desktop-break {
+    display: none;
+  }
+}
+@media (max-width: 375px) {
+  .tai-chat-identity > span {
+    display: none;
+  }
+  .tai-section .chat-toolbar > div {
+    gap: 6px;
+  }
+}
+
+/* Conversation refinements: fixed header and composer, independently scrolling log. */
+.tai-section .chat-shell {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.tai-section .chat-toolbar {
+  position: static;
+  flex: 0 0 auto;
+  gap: 12px;
+  padding: 16px 20px;
+}
+.tai-section .mode-badge {
+  background: transparent;
+  padding: 4px;
+  font-size: 11px;
+}
+.tai-section .mode-badge::before {
+  display: none;
+}
+.tai-section .icon-button {
+  min-width: 44px;
+  min-height: 44px;
+}
+.tai-section .chat-body,
+.tai-section .chat-body-welcome {
+  height: clamp(340px, 48dvh, 520px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex: 0 1 auto;
+  min-height: 0;
+  padding: 24px 20px;
+  scroll-padding-block: 24px;
+  overflow-anchor: none;
+}
+.tai-section .message {
+  font-size: 15px;
+  line-height: 1.65;
+  margin-bottom: 24px;
+  align-items: flex-start;
+}
+.tai-section .message:last-child {
+  margin-bottom: 0;
+}
+.tai-section .message-bubble {
+  max-width: min(100%, 740px);
+  flex: 1;
+}
+.tai-section .message.user > .message-bubble {
+  max-width: 84%;
+  flex: 0 1 auto;
+}
+.tai-section .message-name {
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  display: block;
+  margin-bottom: 8px;
+}
+.tai-section .message p {
+  font-size: inherit;
+  line-height: inherit;
+}
+.tai-section .user-prose {
+  white-space: pre-wrap;
+  margin: 0;
+}
+.assistant-markdown {
+  overflow-wrap: anywhere;
+}
+.tai-section .assistant-markdown p {
+  white-space: normal;
+  margin: 0 0 0.8em;
+}
+.assistant-markdown > :last-child {
+  margin-bottom: 0 !important;
+}
+.assistant-markdown h4,
+.assistant-markdown h5,
+.assistant-markdown h6 {
+  font: 600 16px/1.5 var(--font-body);
+  margin: 1em 0 0.5em;
+}
+.assistant-markdown ul,
+.assistant-markdown ol {
+  padding-left: 1.3em;
+  margin: 0.6em 0 1em;
+}
+.assistant-markdown li + li {
+  margin-top: 0.35em;
+}
+.assistant-markdown a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.assistant-markdown blockquote {
+  border-left: 2px solid var(--border);
+  padding-left: 14px;
+  margin: 12px 0;
+  color: var(--muted);
+}
+.assistant-markdown code {
+  font:
+    0.88em/1.6 ui-monospace,
+    monospace;
+  background: #0003;
+  border-radius: 4px;
+  padding: 2px 4px;
+}
+.assistant-markdown pre {
+  max-width: 100%;
+  overflow-x: auto;
+  padding: 14px;
+  background: #0003;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin: 12px 0;
+}
+.assistant-markdown pre code {
+  white-space: pre;
+  background: transparent;
+  padding: 0;
+}
+.chat-sources {
+  margin-top: 14px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.chat-sources summary {
+  cursor: pointer;
+  min-height: 32px;
+  width: fit-content;
+  padding: 5px 0;
+}
+.chat-sources summary span {
+  margin-left: 5px;
+  opacity: 0.8;
+}
+.chat-sources ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  padding: 4px 0 0;
+  margin: 0;
+  list-style: none;
+}
+.chat-sources a {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 32px;
+  color: var(--muted);
+  text-decoration: underline;
+  text-decoration-color: var(--border);
+  text-underline-offset: 4px;
+}
+.chat-sources a:hover {
+  color: var(--accent);
+}
+.message-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 11px;
+  margin-top: 6px;
+}
+.message-actions button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 5px 0;
+  color: var(--muted);
+  background: none;
+  border: 0;
+}
+.message-actions button:hover {
+  color: var(--accent);
+}
+.chat-project {
+  padding: 14px 0 4px;
+  border-top: 1px solid var(--border);
+  margin-top: 14px;
+}
+.chat-project-label {
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  display: block;
+}
+.chat-project > a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--accent);
+  padding: 8px 0;
+}
+.tai-section .chat-project p {
+  font-size: 13px;
+  margin: 0 0 6px;
+}
+.chat-project-stack {
+  color: var(--muted);
+  font-size: 11px;
+}
+.chat-context-contact {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+  margin-top: 10px;
+}
+.tai-section .chat-input {
+  align-items: flex-end;
+}
+.tai-section .chat-input-icon {
+  flex-shrink: 0;
+  margin-bottom: 12px;
+}
+.tai-section .chat-input textarea {
+  font: 16px/1.5 var(--font-body);
+  resize: none;
+  border: 0;
+  color: var(--foreground);
+  background: transparent;
+  padding: 10px 2px;
+  outline: none;
+  min-width: 0;
+  width: 100%;
+  max-height: 144px;
+}
+.tai-section .chat-input textarea::placeholder {
+  color: var(--muted);
+  opacity: 0.8;
+}
+.tai-section .send-button {
+  min-width: 44px;
+  height: 44px;
+  margin-bottom: 1px;
+}
+.tai-section .chat-bottom {
+  padding-bottom: max(16px, env(safe-area-inset-bottom));
+  flex-shrink: 0;
+}
+.chat-latest {
+  align-self: center;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--card);
+  color: var(--accent);
+  border: 1px solid var(--border);
+  border-radius: 30px;
+  padding: 8px 12px;
+  min-height: 36px;
+  margin: -10px 0 10px;
+  font-size: 12px;
+}
+.chat-thinking {
+  color: var(--muted) !important;
+}
+.tai-section .message-suggestions {
+  margin-top: 14px;
+  grid-template-columns: 1fr;
+}
+.tai-section .message-suggestions button {
+  min-height: 44px;
+  padding: 8px 12px;
+  font-size: 13px;
+}
+.tai-architecture-note {
+  font-size: 14px;
+  line-height: 1.65;
+  max-width: 760px;
+  margin: 0 0 22px;
+}
+@media (max-width: 600px) {
+  .tai-section .chat-toolbar {
+    flex-wrap: wrap;
+    padding: 12px;
+  }
+  .tai-section .chat-toolbar > div {
+    gap: 8px;
+  }
+  .tai-bot-icon {
+    width: 36px;
+    height: 36px;
+  }
+  .tai-chat-identity strong {
+    font-size: 17px;
+  }
+  .tai-chat-identity > span {
+    font-size: 11px;
+  }
+  .tai-section .chat-body,
+  .tai-section .chat-body-welcome {
+    height: clamp(300px, 46dvh, 440px);
+    padding: 16px 12px;
+  }
+  .tai-section .message {
+    gap: 7px;
+  }
+  .tai-section .message-avatar {
+    width: 24px;
+    height: 28px;
+    font-size: 12px;
+  }
+  .tai-section .message.assistant > div {
+    padding: 12px;
+  }
+  .tai-section .message.user > .message-bubble {
+    max-width: 90%;
+  }
+  .tai-section .chat-bottom {
+    padding-inline: 12px;
+  }
+  .tai-section .chat-input {
+    padding-left: 10px;
+  }
+  .chat-input-icon {
+    display: none;
+  }
+  .tai-section .mode-badge {
+    font-size: 10px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tai-section *,
+  .tai-section *::before,
+  .tai-section *::after {
+    scroll-behavior: auto !important;
+    animation: none !important;
+    transition: none !important;
+  }
+}

@@ -1,0 +1,299 @@
+# HERO
+
+## Tudor Iacob
+
+### AI Engineer · Python Developer · AI Automation
+
+I build intelligent applications, AI-powered automation systems, and practical software solutions using Python, LLMs, AI agents, and modern AI technologies.
+
+**Primary CTA:** View Projects  
+**Secondary CTA:** Ask T AI  
+**Third CTA:** Let's Work Together
+
+---
+
+# FEATURED PROJECTS
+
+## Selected AI Projects
+
+Practical AI systems built around real-world workflows, automation, data, and intelligent decision support.
+
+---
+
+## AI Company & UAT Profiling Agent
+
+An AI-powered research and profiling system designed to analyze companies and Romanian administrative units, collect relevant business and financial information, evaluate solar opportunity potential, and support commercial decision-making.
+
+The system combines automated data collection, structured analysis, AI-assisted evaluation, and generated business materials.
+
+**Highlights**
+
+- Company and UAT profiling
+- Automated financial-data collection
+- Solar suitability scoring
+- Structured business analysis
+- Automated PDF reporting
+- AI-generated outreach and marketing content
+- Business-system integration
+
+**Technologies**
+
+Python · Streamlit · APIs · AI / LLMs · Data Processing
+
+---
+
+## AI Document Analyst
+
+An AI-assisted document analysis solution designed to make complex business documents easier and faster to review.
+
+The project explores how AI and language models can support document understanding, structured information extraction, summarization, and knowledge retrieval.
+
+**Focus**
+
+- Document intelligence
+- LLM-powered analysis
+- Information extraction
+- Summarization
+- Workflow automation
+
+**Technologies**
+
+Python · LLM APIs · Document Processing · AI Automation
+
+---
+
+## T AI — Personal RAG Assistant
+
+A Retrieval-Augmented Generation assistant built directly into this portfolio.
+
+T AI allows visitors to explore my professional experience, technical skills, projects, certifications, and AI services through natural-language conversation.
+
+Instead of relying only on an LLM's general knowledge, T AI retrieves relevant information from a dedicated portfolio knowledge base before generating an answer.
+
+**Architecture**
+
+Knowledge Base → Chunking → Embeddings → Vector Search → Context Retrieval → LLM → Answer + Sources
+
+**Technologies**
+
+Python · FastAPI · Next.js · TypeScript · LLM APIs · RAG · Embeddings · Supabase · PostgreSQL · pgvector
+
+**CTA:** Ask T AI
+
+---
+
+# T AI
+
+## Meet T AI
+
+### RAG Powered
+
+An AI assistant built to help you explore my experience, projects, technical background, and professional services.
+
+Ask about the technologies I work with, the AI systems I have built, my background, or how AI automation could help with a business workflow.
+
+### Suggested questions
+
+- What AI projects has Tudor built?
+- What technologies does Tudor work with?
+- Tell me about Tudor's Python experience.
+- What experience does Tudor have with AI agents?
+- How could Tudor help automate a business process?
+- What AI services does Tudor offer?
+- Tell me about the Company Profiling Agent.
+- How does T AI work?
+
+---
+
+# ABOUT
+
+## Building AI systems around real-world problems
+
+I am a Python developer focused on AI Engineering, intelligent automation, LLM applications, and practical AI systems.
+
+My work combines software development with business-oriented problem solving. I am particularly interested in building AI agents, document-intelligence applications, RAG systems, APIs, automation workflows, and tools that turn unstructured information into useful actions.
+
+Before moving deeper into software and AI, I spent several years building and managing a business. That experience continues to shape the way I approach technology: not as an end in itself, but as a tool for solving operational problems and creating measurable value.
+
+My current focus is on designing and building reliable AI-powered applications using Python and modern AI technologies.
+
+---
+
+# EXPERIENCE
+
+## AI & Python Projects — VoltaX Solar Systems
+
+Work focused on applying Python and AI to practical business workflows.
+
+Projects include an AI agent for profiling companies and Romanian administrative units, gathering financial and business information, evaluating photovoltaic opportunity potential, and supporting automated commercial outreach.
+
+Additional work includes AI-assisted document analysis and automation.
+
+---
+
+## Founder & Manager — Tudor Furniture Designs
+
+**2016–2025**
+
+Founded and managed a business for several years, developing hands-on experience across operations, project coordination, customer relationships, decision-making, and business development.
+
+This background now informs my approach to AI engineering and automation: understanding the business process first, then choosing the technology that can improve it.
+
+---
+
+# TECHNICAL SKILLS
+
+## AI Engineering
+
+- Large Language Models
+- AI Agents
+- Retrieval-Augmented Generation
+- Prompt Engineering
+- Embeddings
+- Document Intelligence
+- AI Automation
+- LLM API Integration
+
+## Backend & Development
+
+- Python
+- FastAPI
+- REST APIs
+- SQL
+- PostgreSQL
+- Git
+- GitHub
+
+## Machine Learning & Data
+
+- TensorFlow
+- scikit-learn
+- Pandas
+- NumPy
+- Data Processing
+- Machine Learning Fundamentals
+
+## AI Platforms & Tools
+
+- OpenAI APIs
+- ChatGPT
+- Codex
+- Claude
+- Gemini
+
+## Web & Application Development
+
+- Streamlit
+- Next.js
+- React
+- TypeScript
+- Tailwind CSS
+
+---
+
+# SERVICES
+
+## AI Consulting
+
+Identify practical opportunities where AI can improve workflows, reduce repetitive work, improve access to information, or support better decision-making.
+
+The focus is on selecting solutions that make sense for the actual business problem rather than introducing AI for its own sake.
+
+**Typical areas**
+
+AI opportunity assessment · Tool selection · AI architecture · Workflow analysis
+
+---
+
+## AI Automation
+
+Design intelligent workflows that combine AI models, business logic, APIs, and automation.
+
+These solutions can help reduce repetitive manual processes and connect information across existing systems.
+
+**Typical areas**
+
+AI agents · Workflow automation · Document processing · Data extraction · Automated research
+
+---
+
+## AI Integration
+
+Add AI capabilities to existing applications and workflows.
+
+This can include integrating LLM APIs, building AI-powered backend services, connecting business data to AI systems, or creating specialized internal assistants.
+
+**Typical areas**
+
+LLM APIs · Python · FastAPI · RAG · API integrations · Business systems
+
+---
+
+## AI Training
+
+Practical training for individuals and teams who want to use modern AI platforms more effectively.
+
+Training can focus on tools such as ChatGPT and other AI platforms, prompt design, workflow improvement, AI-assisted research, and responsible adoption of AI inside a business.
+
+**Typical areas**
+
+ChatGPT · AI platforms · Prompting · AI workflows · AI adoption
+
+---
+
+# EDUCATION
+
+## Bachelor's Degree — Civil Engineering
+
+Universitatea Tehnică de Construcții București  
+2009–2014
+
+An engineering background that developed structured problem-solving, analytical thinking, and a systems-oriented approach to technical problems.
+
+---
+
+# CERTIFICATIONS
+
+## Complete Python Developer
+
+Zero To Mastery / Udemy
+
+**Credential:** [ADD CREDENTIAL URL]
+
+---
+
+## Supervised Machine Learning
+
+DeepLearning.AI / Coursera
+
+**Credential:** [ADD CREDENTIAL URL]
+
+---
+
+# CONTACT
+
+## Let's build something intelligent.
+
+Have an AI project, automation idea, or software problem?
+
+Whether you are looking to automate a workflow, integrate an LLM into an application, build an internal AI assistant, or explore where AI could add value to your business, feel free to get in touch.
+
+**CTA:** Let's Talk
+
+Email: tudor.iacob@ymail.com  
+LinkedIn: https://www.linkedin.com/in/tudor-iacob/  
+GitHub: https://github.com/TudorIacob/
+
+---
+
+# FOOTER
+
+Tudor Iacob
+
+AI Engineer · Python Developer · AI Automation
+
+Building practical AI systems with Python, LLMs, agents, and automation.
+
+GitHub · LinkedIn
+
+Built with Next.js & TypeScript.

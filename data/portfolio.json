@@ -1,0 +1,191 @@
+{
+  "profile": {
+    "name": "Tudor Iacob",
+    "role": "AI Engineer · Python Developer · AI Automation",
+    "summary": "I build intelligent applications, AI-powered automation systems, and practical software solutions using Python, LLMs, AI agents, and modern AI technologies.",
+    "email": "tudor.iacob@ymail.com",
+    "github": "https://github.com/TudorIacob/",
+    "linkedin": "https://www.linkedin.com/in/tudor-iacob/",
+    "location": "Romania",
+    "about": "I work independently as a Freelance AI Engineer / Python Developer through a Romanian PFA, building practical AI applications and automation solutions. I offer AI consulting, integration and training, connecting software development with business-oriented problem solving.",
+    "background": "Before moving deeper into software and AI, I founded and managed Tudor Furniture Designs (2016–2025). That experience shapes my approach: understand the business process first, then choose the technology that can improve it."
+  },
+  "navigation": ["About", "T AI", "Projects", "Skills", "Services", "Contact"],
+  "projects": [
+    {
+      "title": "AI Company & UAT Profiling Agent",
+      "slug": "company-profiling-agent",
+      "description": "From scattered business data to structured commercial intelligence.",
+      "longDescription": "An AI-powered system for researching companies and Romanian administrative units, collecting financial information, evaluating solar suitability, and generating reports and outreach materials.",
+      "technologies": ["Python", "Streamlit", "LLMs", "APIs"],
+      "category": "AI agents & business intelligence",
+      "featured": true,
+      "image": null,
+      "githubUrl": null,
+      "liveUrl": null,
+      "caseStudyUrl": null,
+      "highlights": [
+        "Company & UAT profiling",
+        "Solar suitability scoring",
+        "Automated PDF reporting"
+      ]
+    },
+    {
+      "title": "AI Document Analyst",
+      "slug": "ai-document-analyst",
+      "description": "Making complex business documents easier to understand.",
+      "longDescription": "An AI-assisted document analysis project exploring document understanding, structured information extraction, and summarization. Supported formats and production metrics have not been published.",
+      "technologies": ["Python", "LLM APIs", "Document processing"],
+      "category": "Document intelligence",
+      "featured": true,
+      "image": null,
+      "githubUrl": null,
+      "liveUrl": null,
+      "caseStudyUrl": null,
+      "highlights": [
+        "Information extraction",
+        "Document summarization",
+        "Workflow automation"
+      ]
+    },
+    {
+      "title": "T AI — Personal RAG Assistant",
+      "slug": "t-ai",
+      "description": "A portfolio you can have a conversation with.",
+      "longDescription": "An integrated assistant that retrieves public portfolio knowledge before generating answers. Built with separate generation, embedding, and vector-store interfaces, streaming responses, and source references.",
+      "technologies": ["Next.js", "FastAPI", "Supabase", "pgvector", "RAG"],
+      "category": "Retrieval-augmented generation",
+      "featured": true,
+      "image": null,
+      "githubUrl": null,
+      "liveUrl": "/#tai",
+      "caseStudyUrl": null,
+      "highlights": [
+        "Semantic retrieval",
+        "Streaming answers",
+        "Visible portfolio sources"
+      ]
+    }
+  ],
+  "skills": [
+    {
+      "title": "AI & LLM systems",
+      "items": [
+        "Large Language Models",
+        "AI agents",
+        "RAG",
+        "Embeddings",
+        "Prompt engineering",
+        "Document intelligence"
+      ]
+    },
+    {
+      "title": "Backend & development",
+      "items": [
+        "Python",
+        "FastAPI",
+        "REST APIs",
+        "SQL",
+        "PostgreSQL",
+        "Git / GitHub"
+      ]
+    },
+    {
+      "title": "Machine learning & data",
+      "items": [
+        "Pandas",
+        "NumPy",
+        "scikit-learn",
+        "TensorFlow",
+        "Data processing"
+      ]
+    },
+    {
+      "title": "Web & AI tools",
+      "items": [
+        "Next.js",
+        "React",
+        "TypeScript",
+        "Tailwind CSS",
+        "Streamlit",
+        "OpenAI APIs",
+        "ChatGPT",
+        "Codex",
+        "Claude",
+        "Gemini"
+      ]
+    }
+  ],
+  "services": [
+    {
+      "title": "AI Consulting",
+      "description": "Find practical opportunities for AI in your operations, with a clear view of the problem, constraints, and implementation options.",
+      "areas": "Opportunity assessment / Architecture / Workflow analysis"
+    },
+    {
+      "title": "AI Automation",
+      "description": "Connect models, business logic, and APIs to reduce repetitive work and turn information into useful actions.",
+      "areas": "AI agents / Document workflows / Automated research"
+    },
+    {
+      "title": "AI Integration",
+      "description": "Bring LLM capabilities into existing applications, connect business data, or build a focused internal assistant.",
+      "areas": "LLM APIs / RAG / Python services / Business systems"
+    },
+    {
+      "title": "AI Training",
+      "description": "Help individuals and teams use modern AI tools effectively through practical, workflow-focused training.",
+      "areas": "ChatGPT / Prompting / AI workflows / Responsible adoption"
+    }
+  ],
+  "certifications": [
+    {
+      "name": "Complete Python Developer",
+      "issuer": "Zero To Mastery / Udemy",
+      "year": null,
+      "credentialUrl": null,
+      "image": null,
+      "status": "Credential link pending"
+    },
+    {
+      "name": "Machine learning coursework",
+      "issuer": "DeepLearning.AI / Coursera",
+      "year": null,
+      "credentialUrl": null,
+      "image": null,
+      "status": "Exact course title and credential pending confirmation"
+    }
+  ],
+  "questions": [
+    "What AI projects has Tudor built?",
+    "What technologies does Tudor work with?",
+    "How could Tudor help automate my business?",
+    "What AI consulting services does Tudor offer?",
+    "Tell me about Tudor's Python experience.",
+    "What projects demonstrate RAG experience?",
+    "What experience does Tudor have with AI agents?"
+  ],
+  "experience": [
+    {
+      "label": "2026 – Present",
+      "title": "Freelance AI Engineer / Python Developer",
+      "organization": "Self-employed / PFA",
+      "description": "Building AI applications and automation with Python, FastAPI, LLMs, RAG, AI agents and APIs, alongside AI consulting and implementation support."
+    },
+    {
+      "label": "AI & PYTHON PROJECTS",
+      "title": "VoltaX Solar Systems",
+      "description": "Company profiling, document analysis, and business automation."
+    },
+    {
+      "label": "2016 — 2025",
+      "title": "Founder & Manager",
+      "description": "Tudor Furniture Designs"
+    },
+    {
+      "label": "2009 — 2014",
+      "title": "Civil Engineering",
+      "description": "Universitatea Tehnică de Construcții București"
+    }
+  ]
+}

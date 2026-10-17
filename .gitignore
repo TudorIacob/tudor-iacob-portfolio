@@ -1,0 +1,15 @@
+node_modules/
+.pnpm-store/
+.next/
+.env*
+!.env.example
+.venv/
+__pycache__/
+.pytest_cache/
+*.tsbuildinfo
+artifacts/
+.env
+.env.local
+.env.*.local
+backend/.env
+

@@ -1,0 +1,11 @@
+.git
+.next
+.venv
+node_modules
+artifacts
+**/.env
+**/.env.*
+**/__pycache__
+**/.pytest_cache
+backend/tests
+*.tsbuildinfo
