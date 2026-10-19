@@ -1,4 +1,5 @@
 import { demoAnswer } from "@/lib/demo";
+import { backendBaseUrl, backendChatUrl } from "@/lib/backend";
 import { readJson, trustedOrigin } from "@/lib/server";
 import { chatRateLimit } from "@/lib/chat-rate-limit";
 import { parseChatRequest, type ChatRequest } from "@/lib/chat-request";
@@ -39,20 +40,18 @@ export async function POST(request: Request) {
       "[tai] distributed_rate_limit_unavailable; using backend safety limit",
     );
   }
-  if (process.env.BACKEND_URL) {
+  const backendUrl = backendBaseUrl();
+  if (backendUrl) {
     try {
-      const upstream = await fetch(
-        `${process.env.BACKEND_URL.replace(/\/$/, "")}/chat`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "X-API-Key": process.env.BACKEND_API_KEY || "",
-          },
-          body: JSON.stringify(body),
-          signal: AbortSignal.any([request.signal, AbortSignal.timeout(55000)]),
+      const upstream = await fetch(backendChatUrl(backendUrl), {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-API-Key": process.env.BACKEND_API_KEY || "",
         },
-      );
+        body: JSON.stringify(body),
+        signal: AbortSignal.any([request.signal, AbortSignal.timeout(55000)]),
+      });
       if (!upstream.ok) {
         const retry = upstream.headers.get("Retry-After");
         // Allow only a numeric delay; never relay arbitrary upstream headers.
@@ -80,6 +79,8 @@ export async function POST(request: Request) {
       return Response.json({ error: "T AI unavailable" }, { status: 503 });
     }
   }
+  if (process.env.VERCEL === "1")
+    return Response.json({ error: "T AI unavailable" }, { status: 503 });
   const { text, sources } = demoAnswer(body.message);
   const encoder = new TextEncoder();
   const stream = new ReadableStream({

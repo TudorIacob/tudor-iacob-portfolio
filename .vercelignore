@@ -1,0 +1,17 @@
+.git/
+.vercel/
+node_modules/
+.pnpm-store/
+.next/
+.venv/
+backend/.venv/
+**/__pycache__/
+**/.pytest_cache/
+artifacts/
+*.tsbuildinfo
+.env
+.env.*
+backend/.env
+backend/.env.*
+!.env.example
+!backend/.env.example

@@ -23,6 +23,7 @@ const envNames = [
   "NODE_ENV",
   "VERCEL",
   "BACKEND_URL",
+  "TAI_BACKEND_URL",
   "BACKEND_API_KEY",
   "UPSTASH_REDIS_REST_URL",
   "UPSTASH_REDIS_REST_TOKEN",
@@ -38,6 +39,7 @@ async function fixture(run) {
     NODE_ENV: "production",
     VERCEL: "1",
     BACKEND_URL: "https://backend.example",
+    TAI_BACKEND_URL: "https://backend.example",
     BACKEND_API_KEY: "test-only",
     UPSTASH_REDIS_REST_URL: "https://redis.example",
     UPSTASH_REDIS_REST_TOKEN: "test-only",
@@ -126,6 +128,51 @@ test("normal chat streams unchanged with Redis checked before backend", () =>
     assert.equal(state.backendCalls, 1);
     assert.deepEqual(state.commands[0].slice(-4), [2, 60, 3, 86400]);
   }));
+
+test("Vercel binding wins over a stale local backend URL", () =>
+  fixture(async (state) => {
+    process.env.BACKEND_URL = "http://127.0.0.1:8000";
+    assert.equal((await POST(request())).status, 200);
+    assert.equal(state.backendCalls, 1);
+  }));
+
+test("missing Vercel binding fails closed without demo or external fallback", () =>
+  fixture(async (state) => {
+    delete process.env.TAI_BACKEND_URL;
+    const response = await POST(request());
+    assert.equal(response.status, 503);
+    assert.equal(state.backendCalls, 0);
+    assert.doesNotMatch(
+      await response.text(),
+      /mode|localhost|backend.example/,
+    );
+  }));
+
+test("standalone local backend remains supported without a binding", () =>
+  fixture(async (state) => {
+    delete process.env.TAI_BACKEND_URL;
+    delete process.env.VERCEL;
+    process.env.TRUSTED_CLIENT_IP_HEADER = "x-vercel-forwarded-for";
+    assert.equal((await POST(request())).status, 200);
+    assert.equal(state.backendCalls, 1);
+  }));
+
+test("binding URLs retain their path prefix and resolve at request time", async () => {
+  const { backendChatUrl, backendBaseUrl } = await load("../lib/backend.ts");
+  assert.equal(
+    backendChatUrl("https://internal.example/prefix").href,
+    "https://internal.example/prefix/chat",
+  );
+  assert.equal(
+    backendChatUrl("https://internal.example/prefix/").href,
+    "https://internal.example/prefix/chat",
+  );
+  await fixture(async () => {
+    assert.equal(backendBaseUrl(), "https://backend.example");
+    process.env.TAI_BACKEND_URL = "https://replacement.example";
+    assert.equal(backendBaseUrl(), "https://replacement.example");
+  });
+});
 test("minute limit blocks upstream and returns remaining retry time", () =>
   fixture(async (state) => {
     await POST(request());

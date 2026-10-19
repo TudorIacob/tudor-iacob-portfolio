@@ -203,11 +203,18 @@ Optional live acceptance check (with both local servers running): from `backend`
 
 ## Deployment
 
-### Vercel frontend
+### Vercel multi-service project
+
+See [Vercel deployment](VERCEL_DEPLOYMENT.md) for the public Next.js service,
+internal FastAPI service, runtime binding, environment variables, local testing,
+and plan restrictions. The portfolio advertises paid services, so Pro is recommended
+for public deployment under Vercel's commercial-use policy.
+
+### Alternative: independently hosted frontend/backend
 
 1. Put the project in your Git repository and import it into Vercel, using the repository root.
 2. Choose Next.js, Node 24, `pnpm install --frozen-lockfile`, and `pnpm build`.
-3. Add `SITE_URL`, `BACKEND_URL`, `BACKEND_API_KEY` and the contact variables described in CONTACT_SETUP.md in Vercel settings. Configure the same canonical origin on your custom domain.
+3. For independent hosting, adapt/remove the Services configuration and use a frontend-specific external backend URL configuration; the checked-in Vercel Services setup intentionally requires its runtime binding. On non-Vercel hosts, `BACKEND_URL` remains supported. Add `SITE_URL`, `BACKEND_API_KEY` and the contact variables described in CONTACT_SETUP.md. Configure the same canonical origin on your custom domain.
 4. Deploy and verify project routes, sitemap, generated social image, chat streaming and contact delivery.
 
 ### Independent Python backend

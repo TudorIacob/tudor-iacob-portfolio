@@ -1,5 +1,6 @@
 node_modules/
 .pnpm-store/
+.vercel/
 .next/
 .env*
 !.env.example
@@ -12,4 +13,17 @@ artifacts/
 .env.local
 .env.*.local
 backend/.env
+
+# Local tools, logs, and temporary files (shared editor settings remain trackable).
+.idea/
+.vscode/*
+!.vscode/settings.json
+venv/
+.mypy_cache/
+.ruff_cache/
+*.log
+*.tmp
+*.swp
+.DS_Store
+Thumbs.db
 

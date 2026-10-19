@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { backendBaseUrl } from "@/lib/backend";
 import {
   Braces,
   Database,
@@ -66,7 +67,7 @@ export function TAISection() {
           </p>
         </header>
         <TAIChat
-          live={!!process.env.BACKEND_URL}
+          live={!!backendBaseUrl()}
           suggestions={[
             "What projects has Tudor built?",
             "What are Tudor's AI skills?",
