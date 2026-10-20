@@ -1,0 +1,11 @@
+.git
+.git/**
+backend/
+.gcloudignore
+#!include:.gitignore
+**/.env
+**/.env.*
+**/*.pem
+**/*.key
+**/*service-account*.json
+**/*credentials*.json

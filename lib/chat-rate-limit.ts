@@ -41,13 +41,20 @@ export function chatLimitKeys(
     request,
     env.VERCEL === "1",
     env.TRUSTED_CLIENT_IP_HEADER,
+    env,
   );
   // Never collapse production visitors into a silent shared bucket. Missing trusted
   // identity triggers the documented backend safety fallback instead.
-  if (!ip && (env.VERCEL === "1" || env.NODE_ENV === "production"))
+  if (
+    !ip &&
+    !env.K_SERVICE &&
+    (env.VERCEL === "1" || env.NODE_ENV === "production")
+  )
     throw new Error("Visitor identity unavailable");
   const digest = createHash("sha256")
-    .update(ip || "local-development")
+    .update(
+      ip || (env.K_SERVICE ? "cloud-run-shared-safety" : "local-development"),
+    )
     .digest("hex");
   return [`tai:ratelimit:minute:${digest}`, `tai:ratelimit:day:${digest}`];
 }

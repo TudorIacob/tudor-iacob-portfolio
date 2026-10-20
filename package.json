@@ -8,11 +8,12 @@
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "test": "node --test scripts/test-chat.mjs scripts/test-markdown.mjs scripts/test-contact.mjs scripts/test-chat-rate-limit.mjs",
+    "test": "node --test scripts/test-chat.mjs scripts/test-markdown.mjs scripts/test-contact.mjs scripts/test-chat-rate-limit.mjs scripts/test-cloud-run.mjs",
     "format": "prettier --write app components data lib scripts *.ts *.mjs *.json README.md"
   },
   "dependencies": {
     "@upstash/redis": "^1.39.0",
+    "google-auth-library": "^11.3.1",
     "lucide-react": "^0.468.0",
     "next": "^16.2.1",
     "react": "^19.2.0",

@@ -1,29 +1,37 @@
 # Tudor Iacob — AI engineering portfolio
 
-A responsive Next.js portfolio with three project detail pages and **T AI**, a separate FastAPI RAG application. The visual system uses dark neutrals, a restrained green accent, CSS project diagrams, accessible controls, and reduced-motion support. Existing `site texts.txt` and `knowledge/*.md` source files are preserved. Supplemental knowledge is explicitly allowlisted; renaming a document does not automatically add it to the index.
+A portfolio presenting Tudor Iacob's work in AI engineering and Python, with three project detail pages and **T AI**, a conversational RAG assistant. T AI retrieves public portfolio evidence, streams its answers, and displays source references. The intended production platform is **Google Cloud Run**, with a public Next.js service and an IAM-authenticated FastAPI service.
+
+**Production URL: not deployed or verified yet.** Deployment preparation does not establish production availability, performance, or operating cost.
+
+The visual system uses dark neutrals, a restrained green accent, accessible controls, and reduced-motion support. Existing public source documents are preserved. Supplemental knowledge is explicitly allowlisted; renaming a document does not automatically add it to the index.
+
+## Technology stack
+
+- Next.js 16, React, TypeScript, Node.js 24, pnpm.
+- Python 3.13, FastAPI, Uvicorn, HTTPX, Pydantic.
+- OpenAI Responses API and embeddings; Supabase PostgreSQL with pgvector.
+- Upstash Redis for distributed quotas; Resend for contact delivery.
+- Multi-stage Docker builds, Cloud Run service identities, Google ID tokens, Secret Manager.
 
 ## What works without credentials
 
 - All portfolio sections, project pages, anchor navigation, mobile menu, metadata, generated social image, sitemap and favicon.
 - T AI **Portfolio preview**: deterministic excerpts from shared public content with source links. It is explicitly labelled and does **not** call an LLM or perform vector retrieval.
-- Validated contact form with server-side Resend delivery, shared Redis rate limiting, inline feedback and retry protection.
+- Contact-form UI and validation. Actual email delivery requires Resend and Redis credentials.
 
 Live RAG is configured and has been tested locally. See `PRODUCTION_AUDIT.md` for the 6 October audit, fixes, evidence and remaining deployment blockers. No public deployment is implied.
 
 ## Architecture
 
-```text
-Browser → Next.js /api/chat → authenticated FastAPI /chat
-                                  ↓
-                         query embedding adapter
-                                  ↓
-                   Supabase RPC → PostgreSQL + pgvector
-                                  ↓
-                       retrieved public chunks
-                                  ↓
-                    grounded prompt → LLM adapter
-                                  ↓
-                  NDJSON stream: sources / tokens / done
+```mermaid
+flowchart LR
+  Browser -->|HTTPS| Web["Public Cloud Run: portfolio-web / Next.js"]
+  Web -->|"/api/chat → /chat · ID token + API key"| API["IAM-private Cloud Run: tai-backend / FastAPI"]
+  API -->|embeddings and Responses| OpenAI
+  API -->|vector retrieval RPC| Supabase["Supabase / pgvector"]
+  Web -->|quotas| Upstash
+  Web -->|contact email| Resend
 ```
 
 The website is mostly rendered by React server components. Client boundaries handle navigation, contact interaction and chat state, receiving only the public data they need. The browser calls only same-origin routes; provider and database credentials stay on the server.
@@ -79,7 +87,7 @@ Keep `BACKEND_URL` empty for the frontend portfolio preview. If you connect a ba
 
 ## Environment configuration
 
-### Frontend: `.env.local` / Vercel environment
+### Frontend: local `.env.local`
 
 | Variable                   | Purpose                                                                           |
 | -------------------------- | --------------------------------------------------------------------------------- |
@@ -203,38 +211,52 @@ Optional live acceptance check (with both local servers running): from `backend`
 
 ## Deployment
 
-### Vercel multi-service project
+### Production deployment — Google Cloud Run
 
-See [Vercel deployment](VERCEL_DEPLOYMENT.md) for the public Next.js service,
-internal FastAPI service, runtime binding, environment variables, local testing,
-and plan restrictions. The portfolio advertises paid services, so Pro is recommended
-for public deployment under Vercel's commercial-use policy.
+See [Google Cloud Run deployment](GOOGLE_CLOUD_RUN_DEPLOYMENT.md) for exact Cloud
+Shell commands, separate environment inventories, secret permissions, billing
+controls, memory acceptance, IAM checks, rollback, and independent RAG ingestion.
 
-### Alternative: independently hosted frontend/backend
+Both services use `europe-west1`, request-based billing, minimum zero and maximum
+one instance per service. The proposed 512 MiB memory allocation requires container
+and cloud testing before launch. The $5/month total target is not guaranteed by
+these settings; Cloud Run spend caps and project alerts are configured manually.
 
-1. Put the project in your Git repository and import it into Vercel, using the repository root.
-2. Choose Next.js, Node 24, `pnpm install --frozen-lockfile`, and `pnpm build`.
-3. For independent hosting, adapt/remove the Services configuration and use a frontend-specific external backend URL configuration; the checked-in Vercel Services setup intentionally requires its runtime binding. On non-Vercel hosts, `BACKEND_URL` remains supported. Add `SITE_URL`, `BACKEND_API_KEY` and the contact variables described in CONTACT_SETUP.md. Configure the same canonical origin on your custom domain.
-4. Deploy and verify project routes, sitemap, generated social image, chat streaming and contact delivery.
+Next.js uses the backend's canonical `BACKEND_URL` as the ID-token audience.
+Google's attached service identity and the existing shared API key protect calls;
+no service-account key file is used. Secret Manager supplies only the secrets each
+service needs. Runtime `SITE_URL` controls canonical metadata, robots, and sitemap.
+Public API routes and the browser UI are unchanged.
 
-### Independent Python backend
-
-Use a Python-compatible host or build from the repository root:
+Build from the repository root:
 
 ```sh
-docker build -f backend/Dockerfile -t tai-backend .
-docker run --env-file backend/.env -p 8000:8000 tai-backend
+docker build -t portfolio-web -f Dockerfile .
+docker build -t tai-backend -f backend/Dockerfile backend
 ```
 
-The container runs as a non-root user on port 8000. Supply secrets using your host's secret store, enable HTTPS, and configure `/health` checks. Allow streaming without proxy buffering and at least a 60-second request window. Use the platform's port override if required. Run the migration and ingestion before routing visitors to live mode. Disable request-body logging. Keep the backend reachable only by the frontend where your platform supports network controls; the API key remains mandatory in live mode.
+The backend build context is **`backend/`**. Both containers run non-root, listen
+on `0.0.0.0:$PORT` (default 8080), and exclude local secrets. Cloud Run refuses demo
+backend startup. Local preview/demo remains available without Google credentials.
 
+Before public launch verify unauthorized backend requests fail, real chat returns
+`mode: live` with relevant citations, cancelled streams stop, quota errors are
+handled, contact delivery succeeds, and metadata uses the actual HTTPS origin.
+On Cloud Run, conservative shared Redis quotas remain in effect until proxy trust
+is verified; Redis failures fail closed. No uptime pings or deployment triggers.
+
+### Alternative: Vercel Services
+
+[Vercel deployment](VERCEL_DEPLOYMENT.md) remains available as an alternative.
+The existing `TAI_BACKEND_URL` binding is preserved outside Cloud Run. Vercel's
+configuration is not used by the Cloud Run Docker builds.
 ## Remaining content and next improvements
 
 - Confirm the machine-learning course title; add credential URLs and dates for both entries.
 - Add public repositories, real screenshots, demos and deeper case studies when available. Current visual diagrams are illustrations, not screenshots of claimed products.
 - Set your real domain, configure live AI/Supabase and configure Resend contact delivery and Redis rate limiting.
 - Calibrate retrieval using a small set of answerable/unanswerable questions, then test prompt-injection cases against the chosen model.
-- Add a shared rate limiter, operational metrics without chat text, and spending alerts before opening a paid API to public traffic.
+- Verify deployed proxy trust for the existing shared rate limiter, operational metrics without chat text, and spending alerts before opening a paid API to public traffic.
 - Run Lighthouse on the deployed domain and screen-reader checks. No Lighthouse score is claimed here.
 
 The modular content and App Router structure supports future `/projects`, `/services`, `/about` and `/blog` pages without replacing the existing application.

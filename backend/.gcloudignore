@@ -1,0 +1,15 @@
+*
+!Dockerfile
+!.dockerignore
+!requirements.lock.txt
+!requirements-runtime.txt
+!app/
+!app/**
+**/__pycache__
+**/*.pyc
+**/.env
+**/.env.*
+**/*.pem
+**/*.key
+**/*service-account*.json
+**/*credentials*.json

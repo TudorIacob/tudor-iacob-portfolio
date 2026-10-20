@@ -1,5 +1,9 @@
 # Vercel Services deployment
 
+Alternative hosting only. The intended production platform is now
+[Google Cloud Run](GOOGLE_CLOUD_RUN_DEPLOYMENT.md). This configuration and binding
+remain supported when `K_SERVICE` is absent.
+
 ## Suitability and plan
 
 This repository uses a public Next.js service and an internal FastAPI service.

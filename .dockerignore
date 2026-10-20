@@ -1,4 +1,8 @@
 .git
+.vercel
+.pnpm-store
+.idea
+.vscode
 .next
 .venv
 node_modules
@@ -7,5 +11,12 @@ artifacts
 **/.env.*
 **/__pycache__
 **/.pytest_cache
-backend/tests
+backend/
 *.tsbuildinfo
+**/.venv
+**/venv
+**/*.log
+**/*.pem
+**/*.key
+**/*service-account*.json
+**/*credentials*.json

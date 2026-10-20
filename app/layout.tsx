@@ -6,6 +6,8 @@ import { portfolio, anchor } from "@/data/portfolio";
 import "./globals.css";
 import { siteUrl, indexable } from "@/lib/site";
 const title = "Tudor Iacob | AI Engineer & Python Developer";
+// Canonical metadata is evaluated with the deployed runtime SITE_URL.
+export const dynamic = "force-dynamic";
 const description =
   "AI Engineer and Python Developer building intelligent applications, AI automation systems, AI agents, RAG solutions, and LLM-powered software.";
 export const metadata: Metadata = {

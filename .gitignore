@@ -27,3 +27,10 @@ venv/
 .DS_Store
 Thumbs.db
 
+# Private keys and Google application/service-account credentials.
+*.pem
+*.key
+*service-account*.json
+*credentials*.json
+application_default_credentials.json
+

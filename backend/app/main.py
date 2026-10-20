@@ -1,5 +1,6 @@
 from contextlib import asynccontextmanager
 import asyncio
+import os
 import httpx
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -40,6 +41,8 @@ class BodyLimitMiddleware:
 
 def create_app(settings: Settings | None = None):
     settings = settings or Settings()
+    if os.environ.get('K_SERVICE') and settings.mode != 'live':
+        raise ValueError('Cloud Run requires MODE=live and complete server credentials.')
     @asynccontextmanager
     async def lifespan(app):
         async with httpx.AsyncClient(timeout=httpx.Timeout(30, connect=5)) as client:

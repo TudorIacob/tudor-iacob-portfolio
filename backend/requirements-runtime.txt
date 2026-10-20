@@ -1,0 +1,7 @@
+# Runtime-only dependencies, constrained to the tested versions.
+# The constraint file does not install Windows-only or development packages.
+-c requirements.lock.txt
+fastapi==0.142.2
+httpx==0.28.1
+pydantic-settings==2.15.0
+uvicorn==0.54.0

@@ -12,6 +12,18 @@ Keys are `tai:ratelimit:minute:<sha256>` and `tai:ratelimit:day:<sha256>`. Only 
 
 ## Infrastructure and identity
 
+### Google Cloud Run
+
+Cloud Run is the intended production target. Platform-injected `K_SERVICE` enables
+a fail-closed policy: Redis errors return 503 before the authenticated backend call.
+Without a verified `CLOUD_RUN_TRUSTED_PROXY_HOPS`, chat and contact use conservative
+shared buckets. Existing 15/minute and 100/day chat quotas remain enforced, but
+visitors share them until proxy trust is verified. A verified hop count selects the
+client IP from the trusted right-hand side of X-Forwarded-For; never trust arbitrary
+prefixes. See [Cloud Run acceptance steps](GOOGLE_CLOUD_RUN_DEPLOYMENT.md).
+
+### Vercel and other hosting
+
 `lib/rate-limit-redis.ts` provides the shared Upstash client and trusted-IP extraction. It reuses the existing `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN`; credentials stay behind a `server-only` import. The connection client is cached, but quota state exists only in Redis. Each operation has a fresh three-second timeout.
 
 On Vercel, chat uses the platform-controlled `x-vercel-forwarded-for` header. Outside Vercel, configure `TRUSTED_CLIENT_IP_HEADER` only if a trusted gateway overwrites it and direct access to Next.js is blocked. Arbitrary forwarding headers and comma-separated chains are not trusted. Local development without a configured trusted header uses a stable `local-development` identifier, so local browsers share a test quota.
@@ -20,7 +32,7 @@ Production without a valid trusted IP does **not** silently group all visitors i
 
 Contact retains its existing limits and `portfolio:contact:v1:*` keys, with its existing shared fallback outside Vercel. Chat never consumes contact quota, nor the reverse. The contact failure policy remains fail-closed.
 
-## Redis failure and backend safety
+## Redis failure and backend safety outside Cloud Run
 
 For chat, Redis timeouts, unavailable/missing configuration and malformed responses produce a fixed server warning without keys, IPs, messages or provider details. The request continues to FastAPI as requested for availability. There is no second in-memory Next.js visitor limiter.
 

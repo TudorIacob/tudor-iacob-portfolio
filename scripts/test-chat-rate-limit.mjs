@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { load } from "./load-ts.mjs";
+import { GoogleAuth } from "google-auth-library";
 import { streamChat } from "../lib/chat.ts";
 const { POST } = await load("../app/api/chat/route.ts");
 const { chatLimitKeys, chatRateLimit } = await load(
@@ -30,6 +31,8 @@ const envNames = [
   "TAI_RATE_LIMIT_PER_MINUTE",
   "TAI_RATE_LIMIT_PER_DAY",
   "TRUSTED_CLIENT_IP_HEADER",
+  "K_SERVICE",
+  "CLOUD_RUN_TRUSTED_PROXY_HOPS",
 ];
 async function fixture(run) {
   const saved = Object.fromEntries(envNames.map((k) => [k, process.env[k]]));
@@ -46,6 +49,8 @@ async function fixture(run) {
     TAI_RATE_LIMIT_PER_MINUTE: "2",
     TAI_RATE_LIMIT_PER_DAY: "3",
   });
+  delete process.env.K_SERVICE;
+  delete process.env.CLOUD_RUN_TRUSTED_PROXY_HOPS;
   const state = {
     backendCalls: 0,
     redisCalls: 0,
@@ -56,6 +61,9 @@ async function fixture(run) {
     warnings: [],
     now: 0,
     commands: [],
+    backendUrl: "https://backend.example/chat",
+    identity: undefined,
+    body: undefined,
   };
   console.warn = (...args) => state.warnings.push(args.join(" "));
   globalThis.fetch = async (url, options) => {
@@ -93,8 +101,9 @@ async function fixture(run) {
         });
       return Response.json([{ result: [blocked, retry] }]);
     }
-    assert.equal(String(url), "https://backend.example/chat");
+    assert.equal(String(url), state.backendUrl);
     assert.equal(options.headers["X-API-Key"], "test-only");
+    assert.equal(options.headers["X-Serverless-Authorization"], state.identity);
     state.backendCalls++;
     if (state.backendStatus !== 200)
       return Response.json(
@@ -105,7 +114,8 @@ async function fixture(run) {
         },
       );
     return new Response(
-      '{"type":"token","text":"Hello"}\n{"type":"done","mode":"live"}\n',
+      state.body ||
+        '{"type":"token","text":"Hello"}\n{"type":"done","mode":"live"}\n',
     );
   };
   try {
@@ -127,6 +137,76 @@ test("normal chat streams unchanged with Redis checked before backend", () =>
     assert.equal(state.redisCalls, 1);
     assert.equal(state.backendCalls, 1);
     assert.deepEqual(state.commands[0].slice(-4), [2, 60, 3, 86400]);
+  }));
+
+test("Cloud Run route streams without buffering and propagates cancellation", () =>
+  fixture(async (state) => {
+    process.env.K_SERVICE = "portfolio-web";
+    process.env.BACKEND_URL = "https://tai-stream-test.run.app";
+    state.backendUrl = "https://tai-stream-test.run.app/chat";
+    state.identity = "Bearer dummy-test-identity";
+    let cancelled = false;
+    state.body = new ReadableStream({
+      start(c) {
+        c.enqueue(new TextEncoder().encode('{"type":"token","text":"Hi"}\n'));
+      },
+      cancel() {
+        cancelled = true;
+      },
+    });
+    const original = GoogleAuth.prototype.getIdTokenClient;
+    GoogleAuth.prototype.getIdTokenClient = async () => ({
+      getRequestHeaders: async () =>
+        new Headers({ authorization: state.identity }),
+    });
+    try {
+      const response = await POST(request());
+      assert.equal(response.status, 200);
+      assert.equal(
+        response.headers.get("content-type"),
+        "application/x-ndjson",
+      );
+      assert.equal(response.headers.get("X-Serverless-Authorization"), null);
+      const reader = response.body.getReader();
+      assert.match(
+        new TextDecoder().decode((await reader.read()).value),
+        /"text":"Hi"/,
+      );
+      await reader.cancel();
+      assert.equal(cancelled, true);
+    } finally {
+      GoogleAuth.prototype.getIdTokenClient = original;
+    }
+  }));
+
+test("Cloud Run IAM failure never reaches backend or leaks provider details", () =>
+  fixture(async (state) => {
+    process.env.K_SERVICE = "portfolio-web";
+    process.env.BACKEND_URL = "https://tai-route-error.run.app";
+    const original = GoogleAuth.prototype.getIdTokenClient;
+    GoogleAuth.prototype.getIdTokenClient = async () => {
+      throw Error("private token data");
+    };
+    try {
+      const response = await POST(request());
+      assert.equal(response.status, 503);
+      assert.equal(state.backendCalls, 0);
+      assert.doesNotMatch(await response.text(), /private|token|run.app/);
+    } finally {
+      GoogleAuth.prototype.getIdTokenClient = original;
+    }
+  }));
+
+test("Cloud Run Redis failure fails closed before Google or OpenAI work", () =>
+  fixture(async (state) => {
+    process.env.K_SERVICE = "portfolio-web";
+    state.redisError = true;
+    const response = await POST(request());
+    assert.equal(response.status, 503);
+    assert.equal(state.backendCalls, 0);
+    assert.deepEqual(state.warnings, [
+      "[tai] distributed_rate_limit_unavailable",
+    ]);
   }));
 
 test("Vercel binding wins over a stale local backend URL", () =>

@@ -1,5 +1,6 @@
 import { demoAnswer } from "@/lib/demo";
 import { backendBaseUrl, backendChatUrl } from "@/lib/backend";
+import { backendRequestHeaders } from "@/lib/backend-auth";
 import { readJson, trustedOrigin } from "@/lib/server";
 import { chatRateLimit } from "@/lib/chat-rate-limit";
 import { parseChatRequest, type ChatRequest } from "@/lib/chat-request";
@@ -35,6 +36,10 @@ export async function POST(request: Request) {
         },
       );
   } catch {
+    if (process.env.K_SERVICE) {
+      console.warn("[tai] distributed_rate_limit_unavailable");
+      return Response.json({ error: "T AI unavailable" }, { status: 503 });
+    }
     // Availability fallback: FastAPI authentication and its safety limiter remain active.
     console.warn(
       "[tai] distributed_rate_limit_unavailable; using backend safety limit",
@@ -43,14 +48,17 @@ export async function POST(request: Request) {
   const backendUrl = backendBaseUrl();
   if (backendUrl) {
     try {
+      const signal = AbortSignal.any([
+        request.signal,
+        AbortSignal.timeout(55000),
+      ]);
+      const headers = await backendRequestHeaders(backendUrl);
+      signal.throwIfAborted();
       const upstream = await fetch(backendChatUrl(backendUrl), {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-API-Key": process.env.BACKEND_API_KEY || "",
-        },
+        headers,
         body: JSON.stringify(body),
-        signal: AbortSignal.any([request.signal, AbortSignal.timeout(55000)]),
+        signal,
       });
       if (!upstream.ok) {
         const retry = upstream.headers.get("Retry-After");
@@ -79,7 +87,7 @@ export async function POST(request: Request) {
       return Response.json({ error: "T AI unavailable" }, { status: 503 });
     }
   }
-  if (process.env.VERCEL === "1")
+  if (process.env.VERCEL === "1" || process.env.K_SERVICE)
     return Response.json({ error: "T AI unavailable" }, { status: 503 });
   const { text, sources } = demoAnswer(body.message);
   const encoder = new TextEncoder();
