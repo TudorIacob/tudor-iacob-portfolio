@@ -1,8 +1,12 @@
 # Tudor Iacob — AI engineering portfolio
 
-A portfolio presenting Tudor Iacob's work in AI engineering and Python, with three project detail pages and **T AI**, a conversational RAG assistant. T AI retrieves public portfolio evidence, streams its answers, and displays source references. The intended production platform is **Google Cloud Run**, with a public Next.js service and an IAM-authenticated FastAPI service.
+**[Live Website →](https://tudoriacob.cloud.run)**
 
-**Production URL: not deployed or verified yet.** Deployment preparation does not establish production availability, performance, or operating cost.
+A portfolio presenting Tudor Iacob's work in AI engineering and Python, with three project detail pages and **T AI**, a conversational RAG assistant. T AI retrieves public portfolio evidence, streams its answers, and displays source references. The production platform is **Google Cloud Run**, with a public Next.js service and an IAM-authenticated FastAPI service.
+
+**Status: Live / Production — Google Cloud Run.** Hosted on Google Cloud Run in `europe-west1`: `portfolio-web` is the public Next.js service; `tai-backend` is the private FastAPI service protected by IAM.
+
+Confirmed working in production: the Next.js frontend, T.AI conversational assistant, OpenAI generation, Supabase RAG retrieval, NDJSON streaming, and the Resend contact form with confirmed email delivery. Status updated 23 October 2026 from the project owner's production verification.
 
 The visual system uses dark neutrals, a restrained green accent, accessible controls, and reduced-motion support. Existing public source documents are preserved. Supplemental knowledge is explicitly allowlisted; renaming a document does not automatically add it to the index.
 
@@ -20,7 +24,7 @@ The visual system uses dark neutrals, a restrained green accent, accessible cont
 - T AI **Portfolio preview**: deterministic excerpts from shared public content with source links. It is explicitly labelled and does **not** call an LLM or perform vector retrieval.
 - Contact-form UI and validation. Actual email delivery requires Resend and Redis credentials.
 
-Live RAG is configured and has been tested locally. See `PRODUCTION_AUDIT.md` for the 6 October audit, fixes, evidence and remaining deployment blockers. No public deployment is implied.
+Live RAG is working in production. See [the production audit](PRODUCTION_AUDIT.md) for the historical 6 October audit, fixes, and evidence; its pre-deployment status is superseded by the production confirmation above. The [Google Cloud Run deployment guide](GOOGLE_CLOUD_RUN_DEPLOYMENT.md) is the primary deployment reference.
 
 ## Architecture
 
@@ -211,15 +215,29 @@ Optional live acceptance check (with both local servers running): from `backend`
 
 ## Deployment
 
-### Production deployment — Google Cloud Run
+### Production Deployment — Google Cloud Run
 
-See [Google Cloud Run deployment](GOOGLE_CLOUD_RUN_DEPLOYMENT.md) for exact Cloud
+The canonical production website is **[https://tudoriacob.cloud.run](https://tudoriacob.cloud.run)**.
+
+| Service | Runtime | Production access |
+| --- | --- | --- |
+| `portfolio-web` | Next.js 16 | Public HTTPS frontend |
+| `tai-backend` | Python / FastAPI | Private backend protected by Google Cloud IAM |
+
+Both Docker services are deployed on Google Cloud Run in `europe-west1`.
+Frontend-to-backend requests use Google Cloud IAM service-to-service
+authentication with an additional backend API key. OpenAI powers generation,
+Supabase with pgvector provides RAG retrieval, Resend delivers contact emails,
+and Upstash Redis provides rate limiting.
+
+See the primary [Google Cloud Run deployment guide](GOOGLE_CLOUD_RUN_DEPLOYMENT.md) for Cloud
 Shell commands, separate environment inventories, secret permissions, billing
 controls, memory acceptance, IAM checks, rollback, and independent RAG ingestion.
 
-Both services use `europe-west1`, request-based billing, minimum zero and maximum
-one instance per service. The proposed 512 MiB memory allocation requires container
-and cloud testing before launch. The $5/month total target is not guaranteed by
+Both services run in `europe-west1`. The runbook recommends request-based billing,
+minimum zero and maximum one instance per service, with a proposed 512 MiB memory
+allocation. Production functionality confirmation does not establish memory or
+load-test results. The $5/month total target is not guaranteed by
 these settings; Cloud Run spend caps and project alerts are configured manually.
 
 Next.js uses the backend's canonical `BACKEND_URL` as the ID-token audience.
@@ -239,7 +257,7 @@ The backend build context is **`backend/`**. Both containers run non-root, liste
 on `0.0.0.0:$PORT` (default 8080), and exclude local secrets. Cloud Run refuses demo
 backend startup. Local preview/demo remains available without Google credentials.
 
-Before public launch verify unauthorized backend requests fail, real chat returns
+For future releases, repeat acceptance checks: unauthorized backend requests fail, real chat returns
 `mode: live` with relevant citations, cancelled streams stop, quota errors are
 handled, contact delivery succeeds, and metadata uses the actual HTTPS origin.
 On Cloud Run, conservative shared Redis quotas remain in effect until proxy trust
@@ -254,9 +272,8 @@ configuration is not used by the Cloud Run Docker builds.
 
 - Confirm the machine-learning course title; add credential URLs and dates for both entries.
 - Add public repositories, real screenshots, demos and deeper case studies when available. Current visual diagrams are illustrations, not screenshots of claimed products.
-- Set your real domain, configure live AI/Supabase and configure Resend contact delivery and Redis rate limiting.
 - Calibrate retrieval using a small set of answerable/unanswerable questions, then test prompt-injection cases against the chosen model.
-- Verify deployed proxy trust for the existing shared rate limiter, operational metrics without chat text, and spending alerts before opening a paid API to public traffic.
+- Verify deployed proxy trust for the existing shared rate limiter, operational metrics without chat text, and spending alerts as ongoing production checks.
 - Run Lighthouse on the deployed domain and screen-reader checks. No Lighthouse score is claimed here.
 
 The modular content and App Router structure supports future `/projects`, `/services`, `/about` and `/blog` pages without replacing the existing application.
