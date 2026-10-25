@@ -39,7 +39,7 @@ class Settings(BaseSettings):
         from urllib.parse import urlsplit
         for value in values:
             url = urlsplit(value)
-            if url.scheme not in ('http', 'https') or not url.hostname or url.path or url.query or url.fragment or url.username:
+            if url.scheme not in ('http', 'https') or not url.hostname or '*' in url.hostname or url.path or url.query or url.fragment or url.username or url.password:
                 raise ValueError('CORS requires explicit origins without paths or wildcards.')
         return values
 

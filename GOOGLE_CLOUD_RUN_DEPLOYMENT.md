@@ -1,8 +1,32 @@
 # Google Cloud Run production deployment
 
-Prepared 20 October 2026. This is a manual runbook, not an executed deployment.
-Production URL: **not deployed / not verified**. No cloud resources, billing settings,
-service-account keys, GitHub triggers, or deployments are created by these files.
+**[Live Website →](https://tudoriacob.cloud.run)**
+
+**Production status: deployed and verified.** Status updated 21 October 2026
+from the project owner's production verification. Both services run on Google
+Cloud Run in `europe-west1`: `portfolio-web` is the public Next.js service and
+`tai-backend` is the private FastAPI service protected by IAM.
+
+Confirmed working in production:
+
+- Next.js frontend.
+- T.AI conversational assistant.
+- OpenAI generation.
+- Supabase RAG retrieval.
+- NDJSON streaming.
+- Resend contact form.
+
+This is the primary deployment guide for setup, future releases, and operations.
+[Vercel Services](VERCEL_DEPLOYMENT.md) remains an alternative deployment option.
+The manual runbook was prepared on 20 October 2026; commands below are reusable
+instructions, not a transcript of the production deployment. Functional
+verification does not establish load capacity, billing controls, proxy trust, or
+cancellation timing. Retain the corresponding operational checks below.
+
+For the existing live services, use the [controlled security patch release](SECURITY_REMEDIATION.md#controlled-release-and-rollback) instead of replaying initial
+provisioning commands. The current patch includes backend dependency and error
+handling changes, so completing it requires both services; the frontend can be
+patched first as an urgent, separately reviewed release.
 
 ## 1. Architecture and release gates
 
@@ -38,7 +62,7 @@ retains `X-API-Key`. Tokens are never returned to the browser. Token acquisition
 bounded to five seconds; failures return a generic 503 with no unauthenticated retry.
 The library caches/refreshes tokens. No service-account JSON file is needed.
 
-Release gates before public use:
+Release gates for new deployments and future releases:
 
 - Configure both billing controls below and verify provider-side budgets.
 - Confirm Supabase migrations and index exist; verify the configured model is available.
@@ -86,8 +110,9 @@ review build/source-storage retention, and avoid body/header/token logging.
 ## 3. Cloud Shell preparation and permissions
 
 Commands are Bash for Cloud Shell, checked against the current gcloud reference.
-They have not been executed against a Google project. Run each section deliberately;
-do not paste the entire runbook as an unattended script.
+For the existing deployment, use only the sections needed for the intended change;
+initial setup is not a required rerun. Run each section deliberately; do not paste
+the entire runbook as an unattended script.
 
 After authorizing cloud setup:
 
@@ -518,9 +543,19 @@ No database migration is required for this hosting change.
 References: [gcloud deploy flags](https://docs.cloud.google.com/sdk/gcloud/reference/run/deploy),
 [source deployments](https://docs.cloud.google.com/run/docs/deploying-source-code).
 
-## 12. Validation performed in this checkout
+## 12. Validation record
 
-On 20 October 2026:
+### Production confirmation — 21 October 2026
+
+The project owner confirmed the six production capabilities listed at the top of
+this guide, with a public Next.js frontend and an IAM-private FastAPI backend in
+`europe-west1`. This supersedes the earlier undeployed status. No deployment or
+Google Cloud resource change was performed for this documentation update.
+
+### Historical checkout validation — 20 October 2026
+
+The following records the local checks and limitations at that time, before the
+production confirmation above:
 
 - ESLint and TypeScript passed.
 - 56 frontend tests and 183 backend tests passed.
@@ -536,9 +571,11 @@ On 20 October 2026:
   were successfully downloaded as Python 3.13 Linux-compatible/pure-Python wheels.
 - Configured secrets were absent from tracked/proposed files and generated browser
   bundles. Generated standalone output contained no environment files.
-- Docker and gcloud are not installed locally. Docker builds, actual non-root
+- Docker and gcloud were not installed locally. Docker builds, actual non-root
   container execution, 512 MiB load tests, source-upload listing, and deployed IAM,
-  streaming, Resend delivery, and billing checks remain unexecuted.
+  streaming, Resend delivery, and billing checks were not executed in that local
+  audit. Subsequent production confirmation is recorded above; it does not
+  establish results for the remaining operational checks.
 - An existing Starlette/httpx test-client deprecation warning remains.
 - The final audit rerun passed all 183 backend tests with an additional local
   pytest-cache permission warning; it does not affect the runtime image.

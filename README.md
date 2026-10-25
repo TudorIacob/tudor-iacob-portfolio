@@ -12,7 +12,7 @@ The visual system uses dark neutrals, a restrained green accent, accessible cont
 
 ## Technology stack
 
-- Next.js 16, React, TypeScript, Node.js 24, pnpm.
+- Next.js 16, React, TypeScript, Node.js 24.22.1 or newer in the 24.x line, pnpm.
 - Python 3.13, FastAPI, Uvicorn, HTTPX, Pydantic.
 - OpenAI Responses API and embeddings; Supabase PostgreSQL with pgvector.
 - Upstash Redis for distributed quotas; Resend for contact delivery.
@@ -59,7 +59,7 @@ The website is mostly rendered by React server components. Client boundaries han
 
 ## Local development
 
-Use Node.js 24 and Python 3.13. This workspace uses **pnpm**, with a committed lockfile. Use pnpm 11.25.0 (or a compatible version) for reproducible installs.
+Use patched Node.js 24.22.1 (or newer 24.x) and Python 3.13. This workspace uses **pnpm**, with a committed lockfile. Use pnpm 11.25.0 (or a compatible version) for reproducible installs.
 
 ```sh
 pnpm install --frozen-lockfile
@@ -192,7 +192,7 @@ The loader normalizes public documents; the chunker respects headings and paragr
 - NDJSON events: `sources`, `token`, `done`, or `error`. The UI detects malformed events, missing completion, network failures, rate limits and interruption.
 - Assistant responses render through react-markdown with raw HTML and images disabled and an explicit URL allowlist; user messages remain plain text. Source URLs are restricted to internal portfolio/project paths; sources without a safe URL render as unlinked titles. No HTML from the model is executed. See [T AI interface validation](TAI_UI_REPORT.md) for the additive UI action contract, accessibility changes and remaining limitations.
 - Body-size, message-length and history limits, backend shared-secret authentication, explicit CORS, safe errors and request timeouts are implemented.
-- T AI visitor quotas are **distributed through Upstash Redis** at Next.js. FastAPI retains a process-local per-peer safety guard. Redis failures fall back to that guard, so configure provider spending limits and monitor outages. Do not trust arbitrary forwarded headers outside your managed gateway. Backend peer limits aggregate requests from the same frontend egress address.
+- T AI visitor quotas are **distributed through Upstash Redis** at Next.js. FastAPI retains a process-local per-peer safety guard. On Cloud Run, Redis failures fail closed with HTTP 503; other hosts retain the documented backend safety fallback. Configure provider spending limits and monitor outages. Do not trust arbitrary forwarded headers outside your managed gateway. Backend peer limits aggregate requests from the same frontend egress address.
 - Conversation state lives in browser memory. Neither service persists complete conversations by default. Live requests send the question, recent history and retrieved public evidence to the configured AI provider; review that provider's retention settings. Hosting infrastructure may retain request metadata.
 - Optional analytics dispatch only named `portfolio:analytics` browser events; no external analytics are installed and questions are never event payloads. Attach your own listener in `lib/analytics.ts` if needed.
 
@@ -214,6 +214,11 @@ Tests cover multilingual social routing, evidence-free generation, bounded untru
 Optional live acceptance check (with both local servers running): from `backend`, run `..\.venv\Scripts\python.exe tests/live_conversation_eval.py`. This uses configured paid APIs and prints synthetic conversations for human review: Romanian/English greetings, clinic inquiries, multi-turn requirements, language switching, French portfolio answers, unsupported claims, contact guidance and deliberately empty retrieval. Model outputs are probabilistic; inspect wording and attribution as well as completion status. No lead is submitted or stored by this flow.
 
 ## Deployment
+
+See [Security remediation and verification](SECURITY_REMEDIATION.md) for the
+reviewed dependency patches, regression results, remaining proxy-trust limitation,
+and controlled redeployment/rollback procedure. Repository changes require a
+manual Cloud Run release; GitHub security checks do not deploy production.
 
 ### Production Deployment — Google Cloud Run
 

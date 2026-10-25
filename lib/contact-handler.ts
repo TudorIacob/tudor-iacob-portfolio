@@ -1,3 +1,4 @@
+import { trustedOrigin } from "./server";
 import { createHash } from "node:crypto";
 import { z } from "zod";
 import { contactSchema, contactErrors } from "./contact-schema";
@@ -54,10 +55,7 @@ export async function handleContact(
 ) {
   if (request.method !== "POST") return methodNotAllowed();
   const origin = request.headers.get("origin");
-  if (
-    !origin ||
-    (origin !== new URL(request.url).origin && origin !== deps.siteUrl)
-  )
+  if (!origin || !trustedOrigin(request, deps.siteUrl))
     return failure(403, "Forbidden");
   if (
     request.headers.get("content-type")?.split(";")[0].trim().toLowerCase() !==

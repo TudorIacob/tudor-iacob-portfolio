@@ -1,8 +1,10 @@
 # Vercel Services deployment
 
-Alternative hosting only. The intended production platform is now
-[Google Cloud Run](GOOGLE_CLOUD_RUN_DEPLOYMENT.md). This configuration and binding
-remain supported when `K_SERVICE` is absent.
+Alternative hosting only. Production is deployed and verified on
+[Google Cloud Run](GOOGLE_CLOUD_RUN_DEPLOYMENT.md), the primary deployment guide.
+Visit the [live website](https://tudoriacob.cloud.run).
+This Vercel configuration and binding remain supported when `K_SERVICE` is absent;
+the Cloud Run production confirmation does not establish a Vercel deployment.
 
 ## Suitability and plan
 

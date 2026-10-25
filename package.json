@@ -8,16 +8,16 @@
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "test": "node --test scripts/test-chat.mjs scripts/test-markdown.mjs scripts/test-contact.mjs scripts/test-chat-rate-limit.mjs scripts/test-cloud-run.mjs",
+    "test": "node --test scripts/test-chat.mjs scripts/test-markdown.mjs scripts/test-contact.mjs scripts/test-chat-rate-limit.mjs scripts/test-cloud-run.mjs scripts/test-security.mjs",
     "format": "prettier --write app components data lib scripts *.ts *.mjs *.json README.md"
   },
   "dependencies": {
     "@upstash/redis": "^1.39.0",
     "google-auth-library": "^11.3.1",
     "lucide-react": "^0.468.0",
-    "next": "^16.2.1",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
+    "next": "^16.4.2",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
     "react-markdown": "^10.1.0",
     "resend": "^6.33.0",
     "zod": "^4.6.7"
@@ -28,7 +28,7 @@
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
     "eslint": "^9.0.0",
-    "eslint-config-next": "^16.2.1",
+    "eslint-config-next": "^16.4.2",
     "jsdom": "^30.1.3",
     "prettier": "^3.9.9",
     "tailwindcss": "^4.1.0",
@@ -37,6 +37,6 @@
   "type": "module",
   "packageManager": "pnpm@11.25.0",
   "engines": {
-    "node": ">=24.0.0"
+    "node": ">=24.22.1"
   }
 }

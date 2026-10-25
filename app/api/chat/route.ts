@@ -9,6 +9,11 @@ export const maxDuration = 60;
 export async function POST(request: Request) {
   if (!trustedOrigin(request))
     return Response.json({ error: "Forbidden" }, { status: 403 });
+  if (
+    request.headers.get("content-type")?.split(";")[0].trim().toLowerCase() !==
+    "application/json"
+  )
+    return Response.json({ error: "Expected JSON" }, { status: 415 });
   let body: ChatRequest;
   try {
     body = parseChatRequest(await readJson(request));
@@ -56,6 +61,7 @@ export async function POST(request: Request) {
       signal.throwIfAborted();
       const upstream = await fetch(backendChatUrl(backendUrl), {
         method: "POST",
+        redirect: "error", // Never forward the application key or IAM token on redirects.
         headers,
         body: JSON.stringify(body),
         signal,

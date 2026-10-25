@@ -61,7 +61,7 @@ def test_config_errors_do_not_echo_credentials():
     assert secret not in str(error.value)
 
 
-@pytest.mark.parametrize('origin', ['*', 'https://site.test/path', 'https://user:pass@site.test'])
+@pytest.mark.parametrize('origin', ['*', 'https://*', 'https://*.example.com', 'https://site.test/path', 'https://user:pass@site.test'])
 def test_cors_rejects_wildcards_and_non_origins(origin):
     with pytest.raises(ValueError):
         Settings(cors_origins=[origin])

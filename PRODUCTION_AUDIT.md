@@ -1,6 +1,11 @@
 # Production-readiness audit — 6 October 2026
 
-## Verdict
+> Historical audit: the verdict and test evidence below describe 6 October 2026.
+> Production subsequently went live at [tudoriacob.cloud.run](https://tudoriacob.cloud.run).
+> See [the October security remediation](SECURITY_REMEDIATION.md) and the primary
+> [Cloud Run guide](GOOGLE_CLOUD_RUN_DEPLOYMENT.md) for current release preparation.
+
+## Historical verdict
 
 Ready for continued local testing, **not yet approved for public paid-AI traffic**. The code, build and live path were audited and improved. Migration 003 and deployment controls below still require action. This was a source review, targeted automated testing and browser audit, not a penetration test or a guarantee against hallucinations.
 
