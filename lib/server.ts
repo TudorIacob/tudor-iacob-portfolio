@@ -1,11 +1,10 @@
 import "server-only";
-export function trustedOrigin(request: Request) {
+// Pin browser writes to the configured canonical origin, not a forwarded Host.
+export function trustedOrigin(request: Request, siteUrl = process.env.SITE_URL) {
+  if (request.headers.get("sec-fetch-site") === "cross-site") return false;
   const origin = request.headers.get("origin");
-  return (
-    !origin ||
-    origin === new URL(request.url).origin ||
-    origin === process.env.SITE_URL
-  );
+  const expected = siteUrl ? new URL(siteUrl).origin : new URL(request.url).origin;
+  return !origin || origin === expected;
 }
 export async function readJson(
   request: Request,

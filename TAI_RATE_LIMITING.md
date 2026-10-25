@@ -63,3 +63,19 @@ No prompts, model, embedding dimensions, database schema, retrieval behavior, Re
 - One subsequent live `/api/chat` request returned HTTP 200, `mode: live`, four retrieved sources and streamed tokens without errors. Its daily Redis counter increased by exactly one.
 - FastAPI was restarted after updating the local non-secret safety setting to 60.
 - Scanned 30 generated client assets: zero matches for the configured Redis token or its environment-variable identifier.
+
+
+## October 2026 security review
+
+The conservative Cloud Run setting remains `CLOUD_RUN_TRUSTED_PROXY_HOPS=0`.
+It intentionally shares the 15/minute and 100/day chat counters; one visitor can
+therefore exhaust availability for others. Contact likewise shares 5 attempts per
+10 minutes, with its independent 100/hour global counter. No limits were increased.
+Do not treat signed cookies or random browser IDs as abuse-resistant visitor IDs:
+an anonymous caller can discard them and obtain a new quota.
+
+The existing verified-suffix option can separate IP buckets, and regression tests
+prove that forged prefixes do not change an already verified suffix. This does not
+prove which suffix is trustworthy in the live topology. See the
+[required two-network verification procedure](SECURITY_REMEDIATION.md#visitor-identity-verification)
+before changing configuration. Production setting changes remain a manual gate.

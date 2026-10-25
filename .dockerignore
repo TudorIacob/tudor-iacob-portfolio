@@ -20,3 +20,8 @@ backend/
 **/*.key
 **/*service-account*.json
 **/*credentials*.json
+
+# Additional private credential containers.
+**/*.p12
+**/*.pfx
+**/application_default_credentials.json

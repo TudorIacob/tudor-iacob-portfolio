@@ -1,0 +1,16 @@
+title = "Portfolio secret scanning"
+[extend]
+useDefault = true
+
+[[rules]]
+id = "supabase-secret-key"
+description = "Supabase server secret (including modern non-JWT keys)"
+regex = '''\bsb_secret_[A-Za-z0-9_-]{16,}\b'''
+keywords = ["sb_secret_"]
+
+# Exact, reviewed synthetic fixture; never exempt a whole test directory.
+[[rules.allowlists]]
+condition = "AND"
+paths = ['''(?:^|/)backend/tests/test_(adapters|rag)\.py$''']
+regexTarget = "match"
+regexes = ['''^sb_secret_test_only_not_a_real_key$''']

@@ -3,6 +3,7 @@ import asyncio
 import os
 import httpx
 from fastapi import FastAPI
+from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from app.api.chat import router
@@ -49,7 +50,13 @@ def create_app(settings: Settings | None = None):
             provider = CompatibleProvider(settings, client)
             app.state.pipeline = RAGPipeline(provider, provider, SupabaseVectorStore(settings, client), settings)
             yield
-    app = FastAPI(title='T AI Portfolio API', version='1.0.0', lifespan=lifespan, docs_url=None if settings.mode == 'live' else '/docs', redoc_url=None)
+    app = FastAPI(title='T AI Portfolio API', version='1.0.0', lifespan=lifespan, docs_url=None if settings.mode == 'live' else '/docs', redoc_url=None, openapi_url=None if settings.mode == 'live' else '/openapi.json')
+    @app.exception_handler(RequestValidationError)
+    async def invalid_request(request, error):
+        # FastAPI's default handler serializes input even with hide_input_in_errors.
+        # Never echo visitor messages or arbitrary unexpected fields to clients/logs.
+        return JSONResponse({'detail': 'Invalid request'}, status_code=422,
+                            headers={'Cache-Control': 'no-store'})
     app.state.settings = settings
     app.state.limiter = RateLimiter(settings.rate_limit_per_minute)
     app.add_middleware(BodyLimitMiddleware)

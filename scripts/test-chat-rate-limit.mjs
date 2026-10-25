@@ -102,6 +102,7 @@ async function fixture(run) {
       return Response.json([{ result: [blocked, retry] }]);
     }
     assert.equal(String(url), state.backendUrl);
+    assert.equal(options.redirect, "error");
     assert.equal(options.headers["X-API-Key"], "test-only");
     assert.equal(options.headers["X-Serverless-Authorization"], state.identity);
     state.backendCalls++;
