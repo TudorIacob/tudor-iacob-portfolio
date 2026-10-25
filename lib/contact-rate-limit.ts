@@ -2,18 +2,24 @@ import { createHash } from "node:crypto";
 import { rateLimitRedis, trustedVisitorIp } from "./rate-limit-redis";
 
 // Atomic, shared counters: five attempts per ten minutes and 100 per hour overall.
+// Check every limit before consuming quota; rejected attempts never increment either.
 // Only expiring counters are stored, never messages or email addresses.
 export const CONTACT_LIMIT_SCRIPT = `
 local retry = 0
 for i, key in ipairs(KEYS) do
-  local count = redis.call('INCR', key)
-  local window = tonumber(ARGV[i * 2])
-  if count == 1 then redis.call('EXPIRE', key, window) end
-  if count > tonumber(ARGV[i * 2 - 1]) then
-    retry = math.max(retry, redis.call('TTL', key), 1)
+  local count = tonumber(redis.call('GET', key) or '0')
+  if count >= tonumber(ARGV[i * 2 - 1]) then
+    local ttl = redis.call('TTL', key)
+    if ttl < 1 then ttl = tonumber(ARGV[i * 2]) end
+    retry = math.max(retry, ttl)
   end
 end
-return retry
+if retry > 0 then return retry end
+for i, key in ipairs(KEYS) do
+  local count = redis.call('INCR', key)
+  if count == 1 then redis.call('EXPIRE', key, tonumber(ARGV[i * 2])) end
+end
+return 0
 `;
 export function contactLimitKeys(request: Request, vercel: boolean) {
   // Never trust caller-controlled forwarded headers outside Vercel.

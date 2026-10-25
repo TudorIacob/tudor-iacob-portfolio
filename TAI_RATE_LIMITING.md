@@ -79,3 +79,24 @@ prove that forged prefixes do not change an already verified suffix. This does n
 prove which suffix is trustworthy in the live topology. See the
 [required two-network verification procedure](SECURITY_REMEDIATION.md#visitor-identity-verification)
 before changing configuration. Production setting changes remain a manual gate.
+
+## Contact quota correction — 25 October 2026
+
+The contact Lua script checks both counters before incrementing either, in one
+atomic Redis evaluation. Requests rejected by the visitor limit cannot consume
+the global quota; requests rejected by the global limit cannot consume visitor
+quota. Limits remain 5 per 600 seconds and 100 per 3600 seconds. Accepted attempts
+still count even when later validation or delivery fails. Redis failures remain
+fail-closed. Existing keys and expiry windows are retained, so counters already
+exhausted before release recover at their original expiration; do not reset them.
+
+`scripts/test-contact-lua.py` executes the actual production script under Lua 5.1
+with an in-memory Redis-command adapter. Four regressions cover rejected-request
+floods, the global cap, expiry/recovery and legacy over-limit counters. CI installs
+test-only `lupa==2.6` in an isolated venv; it is not a runtime dependency.
+
+This fix does not establish trusted visitor identities on Cloud Run. No two-network
+proxy evidence is available, so `CLOUD_RUN_TRUSTED_PROXY_HOPS=0` remains unchanged.
+The shared-bucket limitation remains open until the verification procedure in
+`SECURITY_REMEDIATION.md` is completed. Do not replace that verification with a
+caller-controlled header or resettable cookie, and do not raise aggregate AI quotas.
