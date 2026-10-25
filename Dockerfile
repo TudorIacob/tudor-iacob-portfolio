@@ -1,5 +1,5 @@
 # Build context: repository root. No runtime credentials are build arguments.
-FROM node:24.22.1-bookworm-slim AS dependencies
+FROM node:26.12.1-bookworm-slim AS dependencies
 WORKDIR /app
 RUN npm install --global pnpm@11.25.0
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
@@ -15,7 +15,7 @@ COPY public ./public
 COPY next.config.ts next-env.d.ts tsconfig.json postcss.config.mjs ./
 RUN pnpm build
 
-FROM node:24.22.1-bookworm-slim AS runtime
+FROM node:26.12.1-bookworm-slim AS runtime
 WORKDIR /app
 ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1 PORT=8080
 COPY --from=build --chown=node:node /app/.next/standalone ./
