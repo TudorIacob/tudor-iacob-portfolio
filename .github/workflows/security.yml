@@ -47,6 +47,11 @@ jobs:
       - run: pnpm lint
       - run: pnpm typecheck
       - run: pnpm test
+      - name: Contact quota Lua regressions (no live Redis)
+        run: |
+          python -m venv "$RUNNER_TEMP/contact-lua"
+          "$RUNNER_TEMP/contact-lua/bin/python" -m pip install lupa==2.6
+          "$RUNNER_TEMP/contact-lua/bin/python" scripts/test-contact-lua.py
       - run: pnpm build
         env:
           SITE_URL: https://tudoriacob.cloud.run
